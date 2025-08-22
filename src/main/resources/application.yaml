@@ -2,3 +2,60 @@ spring:
   autoconfigure:
     exclude:
       - org.springframework.boot.autoconfigure.jdbc.DataSourceAutoConfiguration
+
+# Rate Limiter 설정
+rate-limiter:
+  enabled: true
+  default-algorithm: token-bucket
+  client-identifier: ip # ip, user-id, header
+  
+  # 알고리즘별 기본 설정
+  algorithms:
+    token-bucket:
+      capacity: 100        # 버킷 용량 (최대 토큰 수)
+      refill-rate: 10      # 토큰 보충 속도 (초당 토큰 수)
+    fixed-window:
+      limit: 1000          # 윈도우당 최대 요청 수
+      window-size: 3600    # 윈도우 크기 (초)
+    leaky-bucket:
+      bucket-size: 100     # 버킷 크기
+      leak-rate: 5         # 누출 속도 (초당 요청 수)
+    sliding-window-log:
+      window-size-seconds: 60  # 윈도우 크기 (초)
+      max-requests: 100        # 윈도우당 최대 요청 수
+    sliding-window-counter:
+      window-size-seconds: 60  # 윈도우 크기 (초)
+      max-requests: 100        # 윈도우당 최대 요청 수
+  
+  # URL 패턴별 설정 - 각 알고리즘별 테스트 엔드포인트
+  url-patterns:
+    "/api/test/token-bucket":
+      algorithm: token-bucket
+      capacity: 100
+      refill-rate: 10
+    "/api/test/leaky-bucket":
+      algorithm: leaky-bucket
+      capacity: 50
+      refill-rate: 5
+    "/api/test/fixed-window":
+      algorithm: fixed-window
+      limit: 100
+      window-size: 60
+    "/api/test/sliding-window-log":
+      algorithm: sliding-window-log
+      capacity: 80
+      refill-rate: 8
+    "/api/test/sliding-window-counter":
+      algorithm: sliding-window-counter
+      capacity: 120
+      refill-rate: 12
+    "/api/test/admin/**":
+      algorithm: token-bucket
+      capacity: 200
+      refill-rate: 20
+
+# 로깅 설정
+logging:
+  level:
+    com.example.demo.ratelimiter: DEBUG
+    root: INFO
