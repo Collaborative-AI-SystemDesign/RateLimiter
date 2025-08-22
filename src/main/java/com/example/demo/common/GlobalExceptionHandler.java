@@ -6,6 +6,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
+import org.springframework.web.server.ResponseStatusException;
 import org.springframework.web.servlet.NoHandlerFoundException;
 
 import java.util.stream.Collectors;
@@ -33,7 +34,23 @@ public class GlobalExceptionHandler {
         return new ResponseEntity<>(ApiResponse.fail("Validation failed: " + errorMessage), HttpStatus.BAD_REQUEST);
     }
 
-    // 3. 404 Not Found 예외 처리 (설정 필요)
+    // 3. Rate Limit 예외 처리 (429 Too Many Requests)
+    @ExceptionHandler(ResponseStatusException.class)
+    public ResponseEntity<ApiResponse<Void>> handleResponseStatusException(ResponseStatusException ex) {
+        if (ex.getStatusCode() == HttpStatus.TOO_MANY_REQUESTS) {
+            // Rate Limit 전용 응답 헤더 추가
+            return ResponseEntity.status(HttpStatus.TOO_MANY_REQUESTS)
+                    .header("X-RateLimit-Limit", "제한됨")
+                    .header("X-RateLimit-Remaining", "0")
+                    .header("Retry-After", "60")
+                    .body(ApiResponse.fail("⚠️ " + ex.getReason()));
+        }
+        
+        // 다른 상태 코드는 기본 처리
+        return new ResponseEntity<>(ApiResponse.fail(ex.getReason()), ex.getStatusCode());
+    }
+
+    // 4. 404 Not Found 예외 처리 (설정 필요)
     @ExceptionHandler(NoHandlerFoundException.class)
     public ResponseEntity<ApiResponse<Void>> handleNoHandlerFoundException(NoHandlerFoundException ex) {
         return new ResponseEntity<>(ApiResponse.fail("Resource not found: " + ex.getRequestURL()), HttpStatus.NOT_FOUND);
