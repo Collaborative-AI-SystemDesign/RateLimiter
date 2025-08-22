@@ -31,6 +31,14 @@ dependencies {
 //	implementation 'org.springframework.boot:spring-boot-starter-security'
 	implementation 'org.springframework.boot:spring-boot-starter-validation'
 	implementation 'org.springframework.boot:spring-boot-starter-web'
+	implementation 'org.springframework.boot:spring-boot-starter-aop'
+
+	// Rate Limiting Libraries
+	implementation 'com.bucket4j:bucket4j-core:8.7.0'
+	implementation 'com.bucket4j:bucket4j-redis:8.7.0'
+	implementation 'io.github.resilience4j:resilience4j-ratelimiter:2.1.0'
+	implementation 'io.github.resilience4j:resilience4j-spring-boot3:2.1.0'
+	implementation 'com.google.guava:guava:32.1.3-jre'
 
 	//JWT
 //	implementation 'io.jsonwebtoken:jjwt-api:0.11.5'
