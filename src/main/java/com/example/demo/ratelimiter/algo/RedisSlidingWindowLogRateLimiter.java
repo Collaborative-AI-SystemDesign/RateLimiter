@@ -1,4 +1,4 @@
-package com.example.demo.ratelimiter.window;
+package com.example.demo.ratelimiter.algo;
 
 import java.util.UUID;
 import org.springframework.data.redis.core.RedisTemplate;

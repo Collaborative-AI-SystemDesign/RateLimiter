@@ -1,8 +1,4 @@
-package com.example.demo.ratelimiter.window;
-
-import java.util.Collections;
-import org.springframework.data.redis.core.RedisTemplate;
-import org.springframework.data.redis.core.script.RedisScript;
+package com.example.demo.ratelimiter.algo;
 
 public class RedisSlidingWindowCounterLimiter {
 

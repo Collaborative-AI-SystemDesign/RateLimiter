@@ -1,4 +1,4 @@
-package com.example.demo.ratelimiter.window.fixed;
+package com.example.demo.ratelimiter.algo.fixed;
 
 import java.time.Duration;
 import org.springframework.data.redis.core.RedisTemplate;

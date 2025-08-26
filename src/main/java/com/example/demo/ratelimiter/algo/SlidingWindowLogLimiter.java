@@ -1,4 +1,4 @@
-package com.example.demo.ratelimiter.window;
+package com.example.demo.ratelimiter.algo;
 
 import com.example.demo.ratelimiter.common.RateLimiter;
 import com.example.demo.ratelimiter.common.RateLimitResult;

@@ -1,4 +1,4 @@
-package com.example.demo.ratelimiter.bucket;
+package com.example.demo.ratelimiter.algo.bucket;
 
 import com.example.demo.ratelimiter.common.RateLimiter;
 import com.example.demo.ratelimiter.common.RateLimitResult;
