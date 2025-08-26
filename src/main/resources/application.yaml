@@ -2,3 +2,12 @@ spring:
   autoconfigure:
     exclude:
       - org.springframework.boot.autoconfigure.jdbc.DataSourceAutoConfiguration
+
+
+resilience4j:
+  ratelimiter:
+    instances:
+      fixedWindow:
+        limitForPeriod: 1          # 윈도우 내 허용 요청 수 (Limit)
+        limitRefreshPeriod: 1s     # 윈도우 크기 (1분 = 60초) -> 주기적으로 카운터를 리셋하는 고정된 시간
+        timeoutDuration: 0          # 요청이 거부될 때 대기 시간 없이 즉시 실패
