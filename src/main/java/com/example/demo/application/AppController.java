@@ -1,7 +1,6 @@
 package com.example.demo.application;
 
 import com.example.demo.ratelimiter.annotation.RateLimit;
-import com.example.demo.ratelimiter.annotation.LibraryRateLimit;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -47,17 +46,17 @@ public class AppController {
     }
     
     @GetMapping("/library-demo")
-    @LibraryRateLimit(
-        library = LibraryRateLimit.LibraryType.BUCKET4J,
+    @RateLimit(
+        algorithm = RateLimit.AlgorithmType.TOKEN_BUCKET,
         limit = 50,
-        periodSeconds = 60,
-        message = "라이브러리 기반 제한 초과! Bucket4j로 제한되었습니다."
+        refillRate = 10,
+        message = "라이브러리 기반 제한 초과! Token Bucket으로 제한되었습니다."
     )
     public String libraryDemo() {
-        return "🪣 라이브러리 기반 Rate Limiting 데모!\n\n" +
-               "이 엔드포인트는 Bucket4j 라이브러리로 제한됩니다.\n" +
-               "- 1분당 50개 요청 허용\n" +
-               "- 검증된 Token Bucket 알고리즘\n" +
+        return "🪣 Redis 기반 Rate Limiting 데모!\n\n" +
+               "이 엔드포인트는 Redis Token Bucket 알고리즘으로 제한됩니다.\n" +
+               "- 1분당 50개 요청 허용, 초당 10개씩 보충\n" +
+               "- 분산 환경에서 정확한 제한\n" +
                "- 프로덕션 준비 완료";
     }
 }
