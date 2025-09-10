@@ -129,6 +129,21 @@ public class RateLimiterTestController {
     public ApiResponse<String> testCustomKey(@PathVariable String category) {
         return ApiResponse.success(String.format("카테고리 '%s' 커스텀 키 테스트 성공! 🏷️🔑", category));
     }
+
+    /**
+     * HTTP 메서드 + 엔드포인트 기반 Rate Limiting 테스트
+     */
+    @GetMapping("/test/api-based")
+    @RateLimit(
+            algorithm = RateLimit.AlgorithmType.TOKEN_BUCKET,
+            keyType = RateLimit.KeyType.API,
+            limit = 3,
+            refillRate = 1,
+            message = "엔드포인트별 제한 초과!"
+    )
+    public ApiResponse<String> testApiBased() {
+        return ApiResponse.success("HTTP 메서드 + 엔드포인트 기반 Rate Limiting 테스트 성공! 👤🔒");
+    }
     
     // =========================== 수동 테스트 API ===========================
     

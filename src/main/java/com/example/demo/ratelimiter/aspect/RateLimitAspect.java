@@ -73,11 +73,37 @@ public class RateLimitAspect {
                 return prefix + getClientIp();
             case USER:
                 return prefix + "user:" + getUserId();
+            case API:
+                return prefix + "method:" + getHttpMethod() + ":" + getApiPath();
             case CUSTOM:
                 return prefix + "custom:" + rateLimit.customKey();
             default:
                 return prefix + getClientIp();
         }
+    }
+
+    /**
+     * API 경로 추출
+     */
+    private String getApiPath() {
+        ServletRequestAttributes attributes = (ServletRequestAttributes) RequestContextHolder.getRequestAttributes();
+        if (attributes != null) {
+            HttpServletRequest request = attributes.getRequest();
+            return request.getRequestURI();
+        }
+        return "unknown";
+    }
+
+    /**
+     * HTTP 메서드 추출
+     */
+    private String getHttpMethod() {
+        ServletRequestAttributes attributes = (ServletRequestAttributes) RequestContextHolder.getRequestAttributes();
+        if (attributes != null) {
+            HttpServletRequest request = attributes.getRequest();
+            return request.getMethod();
+        }
+        return "unknown";
     }
     
     /**
