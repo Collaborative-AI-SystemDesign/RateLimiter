@@ -81,6 +81,7 @@ public @interface RateLimit {
     enum KeyType {
         IP,        // IP 주소 기반
         USER,      // 사용자 ID 기반
+        API,       // API 엔드포인트 기반
         CUSTOM     // 커스텀 키
     }
 } 
